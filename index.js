@@ -31,3 +31,27 @@ app.delete('/predictions', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 API listening on port ${PORT}`);
 });
+
+// Variable globale pour stocker la valeur
+let lastCount = 0;
+
+// GET /last_count : retourne la valeur actuelle
+app.get('/last_count', (req, res) => {
+  res.json({ value: lastCount });
+});
+
+// POST /last_count : met à jour la valeur
+app.post('/last_count', (req, res) => {
+  const { value } = req.body;
+  if (typeof value !== 'number') {
+    return res.status(400).json({ error: '❌ "value" must be a number' });
+  }
+  lastCount = value;
+  res.json({ message: '✅ Last count updated', value: lastCount });
+});
+
+// DELETE /last_count : réinitialise la valeur à 0
+app.delete('/last_count', (req, res) => {
+  lastCount = 0;
+  res.json({ message: '🧹 Last count reset to 0' });
+});
